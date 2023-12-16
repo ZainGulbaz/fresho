@@ -12,3 +12,7 @@ export const errors={
     badRequest:"Bad Request"
 
 }as const;
+
+export const errorCodes={
+    duplicateEntry:11000
+}

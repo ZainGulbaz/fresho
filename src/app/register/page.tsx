@@ -4,7 +4,10 @@ import { useFormik } from "formik";
 import FormInput from "@/components/commons/forminput";
 import Image from "next/image";
 import { Google } from "@/assets";
+import { statusCodes } from "../api/utils/constants";
+import { responseInterface } from "../api/utils/types";
 import * as yup from "yup";
+import toast from "react-hot-toast/headless";
 
 
 export default function register(){
@@ -21,6 +24,7 @@ export default function register(){
         password:""
       },
       onSubmit:async(data)=>{
+        try{
         let response= await fetch("/api/register",{
            method:"POST",
            headers:{
@@ -28,7 +32,20 @@ export default function register(){
            },
            body:JSON.stringify(data)
         });
-        console.log(response);
+        let responseJson:responseInterface=await response.json();
+        if(responseJson.statusCode==statusCodes.ok)
+        {
+           toast.success(responseJson.message[0]);
+        }
+        else{
+          throw new Error(responseJson.message[0]);
+        }
+      }
+      catch(err:any)
+      {
+        console.log("Inside cath block....");
+        toast.error(err.message);
+      }
       },
       validationSchema
     })
