@@ -9,8 +9,12 @@ import { responseInterface } from "../api/utils/types";
 import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import strings from "@/utils/strings";
+import { useCookies } from "react-cookie";
 
 export default function register() {
+
+  const [cookies,setCookie]=useCookies(["fresho"]);
+  
   let validationSchema = yup.object({
     email: yup.string().required(),
     password: yup.string().required().max(20).min(8),
@@ -22,9 +26,9 @@ export default function register() {
       password: "",
     },
     onSubmit: async (data) => {
-      const toastId= toast.loading(strings.registering_user);
+      const toastId= toast.loading(strings.loging_user);
       try {
-        let response = await fetch("/api/register", {
+        let response = await fetch("/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -33,6 +37,7 @@ export default function register() {
         });
         let responseJson: responseInterface = await response.json();
         if (responseJson.statusCode == statusCodes.ok) {
+          setCookie("fresho",responseJson?.["data"]?.["token"]);
           toast.success(responseJson.message[0]);
         } else {
           throw new Error(responseJson.message[0]);
@@ -50,7 +55,7 @@ export default function register() {
   return (
     <section className="flex flex-col items-center justify-center gap-8 mt-20">
       <h4 className="text-primary text-4xl font-extrabold capitalize">
-        register
+        Login
       </h4>
       <form onSubmit={formik.handleSubmit} className="flex flex-col w-80 gap-1">
         <FormInput
@@ -73,7 +78,7 @@ export default function register() {
           error={formik.errors.password}
         />
         <button className="px-4 p-2 text-white font-bold bg-primary rounded-xl mt-4 ">
-          Register
+          Login
         </button>
         <h6 className="text-gray-400 text-sm mt-2 text-center">
           or Login with provider

@@ -6,7 +6,6 @@ import dbConnect from "@/database/connection";
 import { Strings } from "../utils/strings";
 import * as bcrypt from "bcrypt";
 
-
 export async function POST(req:NextRequest){
     const responsePayload:responseInterface={
         statusCode:statusCodes.badRequest,
