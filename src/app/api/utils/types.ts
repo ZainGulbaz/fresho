@@ -5,4 +5,5 @@ export interface responseInterface{
     error?:string
 }
 
+export type Roles= "admin"|"customer";
 

@@ -1,11 +1,19 @@
 import { model, models,Schema } from "mongoose";
 
-const UserSchema= new Schema({
+export const UserSchema= new Schema({
+    name:{
+     type:String,
+     required:true
+    },
     email:{
         type:String,
         unique:true,
         required:true
 
+    },
+    isGoogle:{
+         type:String,
+         required:false
     },
     password:{
         type:String,
@@ -21,6 +29,11 @@ const UserSchema= new Schema({
             }
 
         }
+    },
+    role:{
+        type:String,
+        enum:["admin","customer"],
+        default:"customer"
     }
 });
 

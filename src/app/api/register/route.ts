@@ -13,7 +13,7 @@ export async function POST(req:NextRequest){
     }
     try{
 
-     const{email,password}=await req.json();
+     const{email,password,name,isGoogle}=await req.json();
 
      const salt= await bcrypt.genSalt();
      const hashedPassword=await bcrypt.hash(password,salt);
@@ -27,7 +27,7 @@ export async function POST(req:NextRequest){
      }
 
      await dbConnect();
-     let user= new User({email,password:hashedPassword});
+     let user= new User({email,password:hashedPassword,name,isGoogle:isGoogle?isGoogle:false});
      let response= await user.save();
      if(response?._id){
         responsePayload.data={user:response};

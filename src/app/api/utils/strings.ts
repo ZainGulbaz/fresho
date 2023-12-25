@@ -1,4 +1,5 @@
 export const Strings={
+
     "duplicate_email":"The email is already in use",
     "registration_failed":"The user cannot be registered",
     "registration_success":"The user is registered successfully",
@@ -6,4 +7,25 @@ export const Strings={
     "no_user_found":"No user found with this email",
     "invalid_password":"The password is invalid",
     "user_login_success":"The user is login successfully",
+    "duplicate_category":"The category is already present",
+    "category_failed":"The category cannot be created",
+    "category_success":"The category is created successfully",
+    "category_fetch_success":"The categories are fetched successfully",
+    "category_fetch_failure":"The categories cannot be fetched",
+    "topping_success":"The topping has been created successfully",
+    "topping_failure":"The topping cannot be created",
+    "topping_duplicate":"The topping with this name already exists",
+    "topping_fetch_success":"The topping has been fetched successfully",
+    "topping_fetch_failure":"The topping cannot be fetched",
+    "product_failure":"The product cannot be created",
+    "product_success":"The product has been created successfully",
+    "product_fetch_failure":"The product cannot be fetched",
+    "product_fetch_success":"The is fetched successfully",
+    "product_duplicate":"The product with this name already exists",
+    "unauthorized_user":"The user is not authorized to access this route",
+    "order_failure":"The order cannot be created",
+    "order_success":"The order was successfully created",
+    "order_fetch_success":"The order was successfully fetched",
+    "order_fetch_failure":"The order failed to fetch",
+
 }

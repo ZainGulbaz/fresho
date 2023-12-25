@@ -12,12 +12,14 @@ import strings from "@/utils/strings";
 
 export default function register() {
   let validationSchema = yup.object({
+    name:yup.string().required(),
     email: yup.string().required(),
     password: yup.string().required().max(20).min(8),
   });
 
   const formik = useFormik({
     initialValues: {
+      name:"",
       email: "",
       password: "",
     },
@@ -53,6 +55,17 @@ export default function register() {
         register
       </h4>
       <form onSubmit={formik.handleSubmit} className="flex flex-col w-80 gap-1">
+        
+        <FormInput
+          name="name"
+          id="name"
+          type="text"
+          placeholer="Enter your name"
+          onChange={formik.handleChange}
+          error={formik.errors.name}
+          value={formik.values.name}
+        />
+        
         <FormInput
           name="email"
           id="email"
@@ -75,21 +88,7 @@ export default function register() {
         <button className="px-4 p-2 text-white font-bold bg-primary rounded-xl mt-4 ">
           Register
         </button>
-        <h6 className="text-gray-400 text-sm mt-2 text-center">
-          or Login with provider
-        </h6>
-        <button
-          className="flex justify-center items-center gap-4 mt-2 py-2 px-4 font-bold border border-gray-200 hover:bg-gray-100 rounded-xl"
-          type="submit"
-        >
-          <Image
-            src={Google}
-            alt="Google Logo"
-            className="rounded-full h-8 w-8"
-            objectFit="contain"
-          />
-          Login with Google
-        </button>
+        
       </form>
       <Toaster position="top-center" reverseOrder={false} />
     </section>

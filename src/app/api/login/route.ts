@@ -7,6 +7,7 @@ import { responseInterface } from "../utils/types";
 import { errors, statusCodes } from "../utils/constants";
 import { generateToken } from "../utils/commons";
 
+
 export async function POST(req:NextRequest){
     const responsePayload:responseInterface={
         statusCode:statusCodes.badRequest,
@@ -25,9 +26,14 @@ export async function POST(req:NextRequest){
 
         const token=generateToken(JSON.stringify({email}));
 
+        
         responsePayload.statusCode=statusCodes.ok;
         responsePayload.message=[Strings.user_login_success];
-        responsePayload.data={token};
+        responsePayload.data={token,user:{
+            name:user?.name,
+            email:user?.email,
+            id:user?._id
+        }};
 
 
     }
