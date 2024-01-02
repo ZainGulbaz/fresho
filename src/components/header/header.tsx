@@ -38,10 +38,10 @@ export default function Header() {
     const toastId = toast.loading("Loging out....");
     if (status == "authenticated") {
       await signOut();
-      localStorage.setItem("fresho_google", "false");
+      //localStorage.setItem("fresho_google", "false");
     } else {
       removeCookie("fresho");
-      localStorage.clear();
+      //localStorage.clear();
     }
 
     setTimeout(() => {

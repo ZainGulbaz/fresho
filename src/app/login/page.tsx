@@ -22,20 +22,20 @@ export default function register() {
   const router=useRouter();
 
 
-    if(localStorage.getItem("fresho_google")=="true" && session.status=="authenticated"){
+    // if(localStorage.getItem("fresho_google")=="true" && session.status=="authenticated"){
       
-      localStorage.setItem("fresho_google","false");
-      fetch("/api/register",{
-        body:JSON.stringify({
-          name:session?.data?.user?.name,
-          email:session?.data?.user?.email,
-          password:"Googleverifieduser123",
-          isGoogle:true
-        }),
-        method:"POST"
-      });
+    //   localStorage.setItem("fresho_google","false");
+    //   fetch("/api/register",{
+    //     body:JSON.stringify({
+    //       name:session?.data?.user?.name,
+    //       email:session?.data?.user?.email,
+    //       password:"Googleverifieduser123",
+    //       isGoogle:true
+    //     }),
+    //     method:"POST"
+    //   });
 
-    };
+    // };
 
   let validationSchema = yup.object({
     email: yup.string().required(),
@@ -113,7 +113,7 @@ export default function register() {
           onClick={async()=>{
             toast.loading(strings.loging_user);
             let res= await signIn("google");
-            localStorage.setItem("fresho_google","true");
+           // localStorage.setItem("fresho_google","true");
           }}
           disabled={session.status==="authenticated" || cookies.fresho!==null}
         >
