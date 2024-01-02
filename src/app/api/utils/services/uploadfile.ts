@@ -15,7 +15,7 @@ export class FileHandler{
 
         const fileName=Date.now()+file.name;
 
-        await writeFile(path.join(__dirname,`../../../../../public/uploads/${folder}`+fileName),fileData);
+        await writeFile(path.join("/tmp",fileName),fileData);
 
         return fileName;
         }
