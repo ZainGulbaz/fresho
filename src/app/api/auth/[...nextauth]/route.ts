@@ -3,4 +3,4 @@ import { AuthObj } from "./authObj";
 
 const handler = NextAuth(AuthObj);
 
-export {handler as GET, handler as POST}
+export {handler as GET, handler as POST }
