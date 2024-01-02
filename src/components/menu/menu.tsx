@@ -7,9 +7,9 @@ export default function Menu(){
     return (
         <section className="mt-16 w-full">
             <div className="flex justify-between">
-                <Image src={Sallad1} objectFit="contain" alt="salad1" className="-top-32 relative -z-10 rounded-full"/>
+                <Image src={Sallad1} alt="salad1" className="-top-32 relative -z-10 rounded-full"/>
                 <SectionName subText="checkout" mainText="Menu"/>
-                <Image className="-top-52 -right-4 rounded-full -z-10 relative" src={Sallad1} objectFit="contain" alt="salad1"/>
+                <Image className="-top-52 -right-4 rounded-full -z-10 relative" src={Sallad2} alt="salad1"/>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                {

@@ -4,6 +4,7 @@ import { responseInterface } from "../utils/types"
 import {Category} from "@/database/Models/Category"
 import dbConnect from "@/database/connection"
 import { Strings } from "../utils/strings"
+import { getUser, roleAuthentication } from "../utils/commons"
 
 export const POST=async(req:NextRequest)=>{
     const responsePayload:responseInterface={
@@ -15,6 +16,11 @@ export const POST=async(req:NextRequest)=>{
 
         await dbConnect();
         const {name}= await req.json();
+
+        const reqHeaders = new Headers(req.headers);
+        const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
+        const user = await getUser(jwtData?.email!);
+        await roleAuthentication(user, ["admin"]);
         
         let categoryBP=new Category({name});
         let category= await categoryBP.save();
@@ -56,6 +62,11 @@ export const GET=async(req:NextRequest)=>{
     try{
          await dbConnect();
          const findObj:{_id?:string}={};
+
+        const reqHeaders = new Headers(req.headers);
+        const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
+        const user = await getUser(jwtData?.email!);
+        await roleAuthentication(user, ["admin"]);
          
          const id=req.nextUrl.searchParams.get("id");
          console.log(id);
@@ -67,9 +78,9 @@ export const GET=async(req:NextRequest)=>{
          responsePayload.data={categories};
          responsePayload.message=[Strings.category_fetch_success];
     }
-    catch(err)
+    catch(err:any)
     {
-        responsePayload.message=[Strings.category_fetch_failure];
+        responsePayload.message=[Strings.category_fetch_failure,err.message];
         responsePayload.statusCode=statusCodes.badRequest;
 
     }
@@ -77,5 +88,4 @@ export const GET=async(req:NextRequest)=>{
         return NextResponse.json(responsePayload);
     }
   
-
 }

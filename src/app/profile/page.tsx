@@ -3,16 +3,18 @@ import FormInput from "@/components/commons/forminput";
 import SectionName from "@/components/commons/sectionname";
 import { UserData } from "@/utils/types";
 import { useSession } from "next-auth/react";
+import { useCookies } from "react-cookie";
 
 export default function Profile(){
 
     const session=useSession();
     let user:Partial<UserData>={};
+    const [cookies]=useCookies(["fresho"]);
     let {status}=session;
 
     if(status=="unauthenticated"){
       try{
-          user=JSON.parse(localStorage.getItem("fresho_user")+"");
+          user=cookies?.fresho?.user;
       }
       catch(err){
       }

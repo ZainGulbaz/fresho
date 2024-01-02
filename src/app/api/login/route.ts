@@ -32,7 +32,8 @@ export async function POST(req:NextRequest){
         responsePayload.data={token,user:{
             name:user?.name,
             email:user?.email,
-            id:user?._id
+            id:user?._id,
+            role:user?.role
         }};
 
 

@@ -2,5 +2,6 @@ export const route={
 register:"/register",
 home:"/",
 login:"/login",
-profile:"/profile"
+profile:"/profile",
+dashboard:"/dashboard"
 };

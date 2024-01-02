@@ -4,6 +4,7 @@ import { NextResponse,NextRequest } from "next/server"
 import { responseInterface } from "../utils/types";
 import { Strings } from "../utils/strings";
 import { errorCodes, errors, statusCodes } from "../utils/constants";
+import { getUser, roleAuthentication } from "../utils/commons";
 
 
 export const POST=async(req:NextRequest)=>{
@@ -16,6 +17,11 @@ export const POST=async(req:NextRequest)=>{
 
         await dbConnect();
         const{price,name}=await req.json();
+
+        const reqHeaders = new Headers(req.headers);
+        const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
+        const user = await getUser(jwtData?.email!);
+        await roleAuthentication(user, ["admin"]);
 
         const toppingBP= new Topping({name,price});
         const topping= await toppingBP.save();
@@ -57,6 +63,11 @@ export const GET=async(req:NextRequest)=>{
     try{
         await dbConnect();
         const findObj:{_id?:string}={};
+
+        const reqHeaders = new Headers(req.headers);
+        const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
+        const user = await getUser(jwtData?.email!);
+        await roleAuthentication(user, ["admin"]);
         
         const id=req.nextUrl.searchParams.get("id");
 

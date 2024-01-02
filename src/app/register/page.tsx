@@ -10,6 +10,7 @@ import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import strings from "@/utils/strings";
 
+
 export default function register() {
   let validationSchema = yup.object({
     name:yup.string().required(),

@@ -3,6 +3,7 @@ import { Schema,models,model,Types } from "mongoose";
 
 const OrderScehma= new Schema({
     products:[{type:Types.ObjectId,ref:"Product"}],
+    user:{type:Types.ObjectId,ref:"User"},
     status:{
         type:String,
         enum:["paid","unpaid"],
