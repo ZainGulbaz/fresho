@@ -13,6 +13,7 @@ import toast,{ Toaster } from "react-hot-toast"
 import { TProduct } from "@/app/dashboard/products/products"
 import Sekeleton from "../commons/skeleton"
 import LoadMore from "../commons/loadmore";
+import { getCategories } from "@/app/dashboard/categories/api";
 
 export default function Menu(){
 
@@ -48,10 +49,12 @@ export default function Menu(){
         try{
             let cookiesHandler= new CookiesHandler(cookies?.fresho as TCookies);
             const token= cookiesHandler.getToken() || "";
+
             const response= await getProducts(token,{start:start.toString(),end:end.toString()});
 
             if(response.statusCode==200){
-                const newProducts=response?.data?.products;
+                let newProducts=response?.data?.products;
+
                 if(newProducts?.length<inc) setAllProductsFetched(true);
                 setProducts(([...products,...newProducts])) ;
             }

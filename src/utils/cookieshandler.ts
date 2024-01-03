@@ -17,12 +17,12 @@ export default class CookiesHandler implements ICookiesHandler {
     }
 
     getToken() {
-        return this.cookie.token;
+        return this.cookie?.token;
 
     }
     getUser() {
 
-        return this.cookie.userData;
+        return this.cookie?.userData;
 
     }
 
