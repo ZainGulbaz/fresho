@@ -87,10 +87,11 @@ export default function ModalBody(props: Props) {
                   onChange={(multiValue,actionMode)=>handleMultiSelect(multiValue,actionMode,input.id)}
                   inputId={input?.id}
                   placeholder={input?.placeholder}
+                  required={input.required?input.required:true}
                 />
               )}
               {
-                input.type=="file" && <input type="file" id={input.id} />
+                input.type=="file" && <input type="file" id={input.id} className="ml-1 mt-4" accept=".png,.jpg,.jpeg" required/>
               }
             </div>
           ))}

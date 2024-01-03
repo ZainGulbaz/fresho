@@ -11,9 +11,10 @@ import { Input } from "../components/modalbody";
 import { getCategories } from "../categories/api";
 import { Category } from "../categories/categories";
 import { getToppings } from "../toppings/api";
-import Image from "next/image";
+import { uploadImage } from "@/utils/cloudinary";
+import strings from "@/utils/strings";
 
-type Row = {
+export type TProduct = {
   name: string;
   _id: string;
   Category: {
@@ -68,15 +69,19 @@ export default function Categories() {
     },
   ]);
 
+
   async function handleAddModalSubmit(event: SyntheticEvent, props: any, multiSelectValues:MultiSelect[]) {
+
+    const toastId= toast.loading(strings.product_create);
+    
     try {
       event.preventDefault();
 
       const  body = getFormJson(event, ["text","number","select-one","multi-select","file"], multiSelectValues) as ProductBody;
+      
+      const file:string=await uploadImage(body["file"] as File);
 
-      console.log(body);
-
-      const response = await createProduct(cookies.fresho.token, body);
+      const response = await createProduct(cookies.fresho.token, {...body,file});
 
       if (response.statusCode === 200) {
         toast.success(response.message[0]);
@@ -87,6 +92,9 @@ export default function Categories() {
       }
     } catch (error: any) {
       toast.error(error.message);
+    }
+    finally{
+      toast.dismiss(toastId);
     }
   }
 
@@ -132,31 +140,31 @@ export default function Categories() {
   const columns = [
     {
       name: "Id",
-      selector: (row: Row) => row["_id"],
+      selector: (row: TProduct) => row["_id"],
     },
     {
       name: "Name",
-      selector: (row: Row) => row["name"],
+      selector: (row: TProduct) => row["name"],
     },
     {
       name: "Category",
-      selector: (row: Row) => row["Category"]["name"],
+      selector: (row: TProduct) => row["Category"]["name"],
     },
     {
       name: "Small($)",
-      selector: (row: Row) => row["small"]["price"],
+      selector: (row: TProduct) => row["small"]["price"],
     },
     {
       name: "Medium($)",
-      selector: (row: Row) => row["medium"]["price"],
+      selector: (row: TProduct) => row["medium"]["price"],
     },
     {
       name: "Large($)",
-      selector: (row: Row) => row["large"]["price"],
+      selector: (row: TProduct) => row["large"]["price"],
     },
     {
       name: "Topping",
-      selector: (row: Row) => (
+      selector: (row: TProduct) => (
         <div className="flex flex-col gap-2">
           {row?.["Toppings"]?.map((topping) => (
             <div className="flex gap-1">
@@ -189,8 +197,6 @@ export default function Categories() {
   return (
     <>
       <Toaster />
-
-<img src="../../../../.next/server/app/uploads/abc.png" alt="test" />
       <TableData
         data={products}
         isModal={isModal}

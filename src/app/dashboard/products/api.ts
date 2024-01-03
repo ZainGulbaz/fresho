@@ -1,6 +1,5 @@
-import { getFormDataFromJson } from "@/utils/commonfunctions";
 
-const api="/api/product";
+let api="/api/product";
 
 
 export type ProductBody={
@@ -10,13 +9,18 @@ export type ProductBody={
     large:number,
     medium:number,
     small:number,
-    file:File
+    file:File|string,
 }
 
-export const getProducts=async (token:string)=>{
+export const getProducts=async (token:string,queryParams:{[key:string]:string}={})=>{
     try{
+       
+        let params:URLSearchParams|string="";
+        if(queryParams){
+         params=new URLSearchParams(queryParams);
+         }   
 
-     let response= await fetch(api,{
+     let response= await fetch(api+(params?"?":null)+params,{
         method:"GET",
         headers:{
             authorization:`Bearer ${token}`
@@ -34,15 +38,12 @@ export const getProducts=async (token:string)=>{
 export const createProduct=async (token:string,body:ProductBody)=>{
     try{
 
-     const formData= getFormDataFromJson(body);
-        
      let response= await fetch(api,{
         method:"POST",
         headers:{
             authorization:`Bearer ${token}`,
         },
-        body:formData
-
+        body:JSON.stringify(body),
      });
      return await response.json();
     }

@@ -7,7 +7,7 @@ export class FileHandler{
 
     }
 
-    async uploadFile(file:File, folder:`${string}/`):Promise<string>{
+    async uploadFile(file:File, folder:string){
 
         try{
         
@@ -15,9 +15,7 @@ export class FileHandler{
 
         const fileName=Date.now()+file.name;
 
-        await writeFile(path.join("/tmp",fileName),fileData);
-
-        return fileName;
+       await writeFile(path.join(__dirname,`../../../../../public/uploads/${folder}`+fileName),fileData);
         }
         catch(err:any){
 

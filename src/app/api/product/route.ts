@@ -7,8 +7,7 @@ import { responseInterface } from "../utils/types";
 import { errorCodes, errors, statusCodes } from "../utils/constants";
 import { Strings } from "../utils/strings";
 import { models } from "mongoose";
-import { convertFormDataToJson, getUser, roleAuthentication } from "../utils/commons"
-import { FileHandler } from "../utils/services/uploadfile";
+import {getUser, roleAuthentication } from "../utils/commons"
 
 
 export const POST = async (req: NextRequest) => {
@@ -27,12 +26,7 @@ export const POST = async (req: NextRequest) => {
         await roleAuthentication(user, ["admin"]);
 
 
-        const { toppingsids, categoryid, name, small, medium, large, file } = convertFormDataToJson(await req.formData());
-
-
-        const fileHandler = new FileHandler();
-
-        const image = await fileHandler.uploadFile(file as File, "products/");
+        const { toppingsids, categoryid, name, small, medium, large, file } = await req.json();
 
         const productBP = new Product({
             name, Toppings: toppingsids, Category: categoryid, small: {
@@ -42,7 +36,7 @@ export const POST = async (req: NextRequest) => {
             }, large: {
                 price: large
             },
-            image
+            image:file
         });
         const product = await productBP.save();
 
@@ -83,8 +77,10 @@ export const GET = async (req: NextRequest) => {
 
     try {
 
-        const findObj: { _id?: string } = {};
+        const findObj: { _id?: string} = {};
         const id = req.nextUrl.searchParams.get("id");
+        const start=parseInt(req.nextUrl.searchParams.get("start")||"0");
+        const end=parseInt(req.nextUrl.searchParams.get("end")||"6");
 
         await dbConnect();
 
@@ -92,7 +88,7 @@ export const GET = async (req: NextRequest) => {
         const reqHeaders = new Headers(req.headers);
         const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
         const user = await getUser(jwtData?.email!);
-        await roleAuthentication(user, ["admin"]);
+        await roleAuthentication(user, ["admin","customer"]);
 
         if (!models.Category) {
             await Category.findOne();;
@@ -104,7 +100,7 @@ export const GET = async (req: NextRequest) => {
 
         if (id) findObj["_id"] = id;
 
-        let products = await (Product.find(findObj).populate(["Category", "Toppings"]));
+        let products = await (Product.find(findObj).skip(start).limit(end-start).populate(["Category", "Toppings"]));
 
         responsePayload.statusCode = statusCodes.ok;
         responsePayload.data = { products };
