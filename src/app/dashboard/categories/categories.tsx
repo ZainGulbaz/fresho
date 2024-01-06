@@ -11,6 +11,7 @@ import { getFormJson } from "@/utils/commonfunctions";
 export type Category={
   name:string,
   _id:string
+  _v?:number
 }
 
 export default function Categories() {

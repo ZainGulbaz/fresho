@@ -77,10 +77,11 @@ export const GET = async (req: NextRequest) => {
 
     try {
 
-        const findObj: { _id?: string} = {};
+        const findObj: { _id?: string,"Category"?:any } = {};
         const id = req.nextUrl.searchParams.get("id");
         const start=parseInt(req.nextUrl.searchParams.get("start")||"0");
         const end=parseInt(req.nextUrl.searchParams.get("end")||"6");
+        const categories=req.nextUrl.searchParams.get("categories");
 
         await dbConnect();
 
@@ -99,6 +100,16 @@ export const GET = async (req: NextRequest) => {
 
 
         if (id) findObj["_id"] = id;
+        if(categories) {
+            try{
+             findObj["Category"]={"$in":JSON.parse(categories)};
+            }
+            catch(error){
+
+                throw new Error(Strings.categories_format_error);
+
+            }
+        }
 
         let products = await (Product.find(findObj).skip(start).limit(end-start).populate(["Category", "Toppings"]));
 

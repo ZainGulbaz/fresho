@@ -11,10 +11,10 @@ export default function About(){
         <p className="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam, saepe ipsam. Labore quis esse, id enim hic quisquam quidem reprehenderit distinctio similique iusto fugit.</p>
         </div>
 
-        <section className="mt-12 flex flex-col justif-center items-center gap-4">
+        <div className="mt-12 flex flex-col justif-center items-center gap-4">
             <SectionName subText="Don't Hesitate" mainText="Contact Us"/>
             <h6 className="text-4xl font-extrabold">+92-336-4317217</h6>
-        </section>
+        </div>
         
      </div>
  </section>)   

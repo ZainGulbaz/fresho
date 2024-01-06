@@ -27,5 +27,6 @@ export const Strings={
     "order_success":"The order was successfully created",
     "order_fetch_success":"The order was successfully fetched",
     "order_fetch_failure":"The order failed to fetch",
+    "categories_format_error":"The categories must be in array of ids"
 
 }

@@ -63,13 +63,7 @@ export const GET=async(req:NextRequest)=>{
          await dbConnect();
          const findObj:{_id?:string}={};
 
-        const reqHeaders = new Headers(req.headers);
-        const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
-        const user = await getUser(jwtData?.email!);
-        await roleAuthentication(user, ["admin"]);
-         
          const id=req.nextUrl.searchParams.get("id");
-         console.log(id);
          
          if(id) findObj["_id"]=id;
 

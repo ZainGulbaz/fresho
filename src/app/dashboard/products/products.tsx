@@ -185,7 +185,7 @@ export default function Categories() {
       if (response.statusCode == 200) {
         setProducts(response?.data?.products);
       } else {
-        throw new Error(response.message[0]);
+        throw new Error(response?.message[0]);
       }
     } catch (err: any) {
       toast.error(err.message);

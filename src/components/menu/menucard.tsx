@@ -4,7 +4,7 @@ import { Pizza } from "@/assets"
 type MenuCardProps={
     title:string;
     description:string,
-    price:string
+    price:string|number
 }
 
 export default function MenuCard({title,description,price}:MenuCardProps){
