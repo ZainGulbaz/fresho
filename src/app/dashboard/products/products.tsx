@@ -35,6 +35,7 @@ export type TProduct = {
       price: number;
     }
   ];
+  image:string
 };
 
 export default function Categories() {

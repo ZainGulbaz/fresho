@@ -10,14 +10,16 @@ type JWTData={
 
 type Methods="POST"|"GET"|"PUT"|"DELETE"
 
-const routes=["/api/category/","/api/product","/api/topping","/api/order"]
+
 
 const routesMethodsMapping:{[key:string]:Methods[]}={
-    [routes[1]]:["GET"],
-    [routes[0]]:["GET"]
+    ["/api/category"]:["GET"],
+    ["/api/product"]:["GET"]
 }
 
 const avoidSpecificMethodsOfRoutes=({pathname,method}:{pathname:string,method:Methods})=>{
+
+    console.log(routesMethodsMapping["/api/category"],pathname);
  if(routesMethodsMapping[pathname]?.includes(method)) return true;
  return false;
 }
@@ -29,6 +31,8 @@ export const middleware=async(req:NextRequest)=>{
     const [bearer,token]=authHeader?.split(" ") || [null,"null"];
 
     console.log(req.nextUrl.pathname,req.method);
+    console.log("HEREEEEE inside the middleware.....");
+
     if(avoidSpecificMethodsOfRoutes({pathname:req.nextUrl.pathname,method:req.method as Methods})){
         console.log("Inside if....");
         return NextResponse.next();
@@ -53,6 +57,7 @@ export const middleware=async(req:NextRequest)=>{
 }
 catch(err:any)
 {
+    console.log("inside error",err.message);
     return NextResponse.json({
         statusCode:statusCodes.unAuthorized,
         error:errors.unAuthorized,

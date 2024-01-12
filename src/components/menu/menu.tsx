@@ -118,11 +118,8 @@ export default function Menu() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {categoricalProducts?.length !== 0 ? (
                 categoricalProducts?.map((product) => (
-                  <MenuCard
-                    title={product?.name}
-                    description="This is the best pizza in the world, very tasty and wonderful wow just elegant"
-                    price={product?.small?.price}
-                    key={product?._id}
+                  <MenuCard      
+                    data={product}
                   />
                 ))
               ) : (

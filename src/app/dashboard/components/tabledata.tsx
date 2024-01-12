@@ -16,7 +16,7 @@ type Props = {
   progressPending?:boolean
 };
 
-const customStyles = {
+export const modalCustomStyles = {
     content: {
       top: '50%',
       left: '50%',
@@ -52,7 +52,7 @@ export default function TableData({ data, columns, title,modalBody,isModal,setIs
 
      <Modal isOpen={isModal}
      onRequestClose={toggleModal}
-     style={customStyles}
+     style={modalCustomStyles}
      contentLabel={title}
     
 

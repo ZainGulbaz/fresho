@@ -3,7 +3,8 @@ const strings={
     loging_user:"The user is being logged in, please wait...",
     logout_success:"You are logout successfully",
     product_create:"The product is being created, please wait...",
-    image_type_not_allowed:"This type of image is not allowed"
+    image_type_not_allowed:"This type of image is not allowed",
+    added_to_cart:"The product is added to the cart",
 }
 
 

@@ -21,9 +21,7 @@ export default function RootLayout({
       <body className={roboto.className}>
         <main className='sm:max-w-4xl sm:mx-auto sm:p-4 p-2 overflow-hidden'>
         <NextAuthProvider>
-        <Header/>  
         {children}
-        <Footer/>
         </NextAuthProvider>
         </main>        
         </body>

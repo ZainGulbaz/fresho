@@ -8,10 +8,15 @@ import strings from "@/utils/strings";
 import { usePathname, useRouter } from "next/navigation";
 import { UserData } from "@/utils/types";
 import { useSession, signOut } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { clientSideRouteAuth, routeHeaderAuth } from "@/utils/routesauth";
+import { useSelector } from "react-redux";
+import { TCartProduct } from "@/app/redux/actions/cart";
+import useLocalStorage from "@/app/customhooks/useLocalStorage";
+import CartIcon from "@/components/cart/carticon";
 
 export default function Header() {
+
   
   const router = useRouter();
   const pathname=usePathname();
@@ -21,18 +26,45 @@ export default function Header() {
   const session = useSession();
   const { data, status } = session;
 
+  const [cartData,setCartData]=useLocalStorage<TCartProduct[]>("cart",[]);
+  const [totalCartProducts,setTotalCartProducts]=useState<number>(0);
+
+  const cartDataRedux= useSelector((store:any)=>store?.cartReducer?.products) || [];
+
+
+  
+
+  const getTotalCartItemsFromCartData=()=>{
+     let totalProds=0;
+     [...cartData,...cartDataRedux]?.map((product)=>totalProds+=product.quantity);
+     
+     setTotalCartProducts(totalProds);
+  };
+
+  useEffect(()=>{
+    console.log("Calculating again....");
+    console.log(cartDataRedux);
+    getTotalCartItemsFromCartData();
+  },[cartDataRedux])
+
+
   useEffect(() => {
     clientSideRouteAuth(router,pathname,cookies.fresho);
+    getTotalCartItemsFromCartData();
   }, []);
 
+  // useEffect(()=>{
+  //   console.log(cartData);
+  // },[cartData]);
+
   let userData: Partial<UserData> = {};
-    if (status == "authenticated") {
-      userData = {
-        name: data?.user?.name + "",
-      };
-    } else {
-      userData = cookies?.fresho?.user;
-    }
+    // if (status == "authenticated") {
+    //   userData = {
+    //     name: data?.user?.name + "",
+    //   }
+    // } else {
+    //   userData = cookies?.fresho?.user;
+    // }
 
   const handleLogout = async () => {
     const toastId = toast.loading("Loging out....");
@@ -52,16 +84,21 @@ export default function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center">
-      <nav className="flex items-center gap-4 font-semibold text-gray-500">
+    <nav className="flex justify-between items-center">
+      <div className="flex items-center gap-4 font-semibold text-gray-500">
         <Link href={route.home} className=" text-primary font-bold text-3xl mr-4">
           Fresho
         </Link>
         {routeHeaderAuth?.[userData?.["role"] || "customer"]?.map((route) => (
           <button onClick={()=>router.push(route.route)}>{route.name}</button>
         ))}
-      </nav>
-      <nav className="flex items-center gap-4 font-semibold text-gray-500">
+      </div>
+      <div className="flex items-center gap-4 font-semibold text-gray-500">
+
+<div className="mr-4">
+<CartIcon products={totalCartProducts}/>
+</div>
+       
         {!token && status == "unauthenticated" && (
           <Link href={route.login}>Login</Link>
         )}
@@ -86,8 +123,8 @@ export default function Header() {
             </button>
           </>
         )}
-      </nav>
+      </div>
       <Toaster />
-    </header>
+    </nav>
   );
 }

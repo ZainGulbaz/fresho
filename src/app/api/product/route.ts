@@ -85,12 +85,6 @@ export const GET = async (req: NextRequest) => {
 
         await dbConnect();
 
-
-        const reqHeaders = new Headers(req.headers);
-        const jwtData = JSON.parse(reqHeaders.get("jwtdata")!);
-        const user = await getUser(jwtData?.email!);
-        await roleAuthentication(user, ["admin","customer"]);
-
         if (!models.Category) {
             await Category.findOne();;
         }
